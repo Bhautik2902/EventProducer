@@ -8,20 +8,30 @@ import com.livevote.eventproducer.service.events.payload.PollCreatedPayload;
 import com.livevote.eventproducer.service.events.payload.VoteCastPayload;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 @Component
 public class EventFactory {
 
-    public BaseEvent create(EventType eventType, Object payload) {
+    private final Map<EventType, Function<Object, BaseEvent>> registry = new HashMap<>();
 
-        switch (eventType) {
-            case POLL_CREATED:
-                return new PollCreatedEvent((PollCreatedPayload) payload);
-
-            case VOTE_CAST:
-                return new VoteCastEvent((VoteCastPayload) payload);
-
-            default:
-                throw new IllegalArgumentException("Unknown event type: " + eventType);
-        }
+    public EventFactory() {
+        registry.put(EventType.POLL_CREATED, payload -> new PollCreatedEvent((PollCreatedPayload) payload));
+        registry.put(EventType.VOTE_CAST, payload -> new VoteCastEvent((VoteCastPayload) payload));
     }
+
+    public BaseEvent create(EventType eventType, Object payload) {
+        Function<Object, BaseEvent> creator = registry.get(eventType);
+        if (creator == null) {
+            throw new IllegalArgumentException("Unknown event type: " + eventType);
+        }
+        return creator.apply(payload);
+    }
+
+    public void register(EventType type, Function<Object, BaseEvent> creator) {
+        registry.put(type, creator);
+    }
+
 }

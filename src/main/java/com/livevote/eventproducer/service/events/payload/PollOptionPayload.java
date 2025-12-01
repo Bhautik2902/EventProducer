@@ -9,7 +9,7 @@ public class PollOptionPayload {
     private String text;
 
     public PollOptionPayload(String text) {
-        this.optionId = UUID.randomUUID().toString(); // auto-generated
+        this.optionId = UUID.randomUUID().toString();
         this.text = text;
     }
 }
