@@ -1,11 +1,9 @@
 package com.livevote.eventproducer.service;
 
 import com.livevote.eventproducer.Enum.EventType;
-import com.livevote.eventproducer.service.events.BaseEvent;
-import com.livevote.eventproducer.service.events.PollCreatedEvent;
-import com.livevote.eventproducer.service.events.VoteCastEvent;
-import com.livevote.eventproducer.service.events.payload.PollCreatedPayload;
-import com.livevote.eventproducer.service.events.payload.VoteCastPayload;
+import com.livevote.eventproducer.events.BaseEvent;
+import com.livevote.eventproducer.events.PollCreatedEvent;
+import com.livevote.eventproducer.events.VoteCastEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -18,8 +16,8 @@ public class EventFactory {
     private final Map<EventType, Function<Object, BaseEvent>> registry = new HashMap<>();
 
     public EventFactory() {
-        registry.put(EventType.POLL_CREATED, payload -> new PollCreatedEvent((PollCreatedPayload) payload));
-        registry.put(EventType.VOTE_CAST, payload -> new VoteCastEvent((VoteCastPayload) payload));
+        registry.put(EventType.POLL_CREATED, PollCreatedEvent.class::cast);
+        registry.put(EventType.VOTE_CAST, VoteCastEvent.class::cast);
     }
 
     public BaseEvent create(EventType eventType, Object payload) {

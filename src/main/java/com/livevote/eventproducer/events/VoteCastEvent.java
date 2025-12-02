@@ -1,4 +1,4 @@
-package com.livevote.eventproducer.service.events.payload;
+package com.livevote.eventproducer.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VoteCastPayload {
+public class VoteCastEvent extends BaseEvent{
     private String voteId;
     private String pollId;
     private String optionId;
     private String userId;
-
-    // Event creation timestamp
     private long createdAt;
 }

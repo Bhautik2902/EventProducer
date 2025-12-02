@@ -1,7 +1,7 @@
 package com.livevote.eventproducer.controller;
 
-import com.livevote.eventproducer.dto.CreatePollRequest;
-import com.livevote.eventproducer.dto.VoteRequest;
+import com.livevote.eventproducer.dto.CreatePollRequestDto;
+import com.livevote.eventproducer.dto.VoteCreateRequestDto;
 import com.livevote.eventproducer.service.PollService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,13 @@ public class PollController {
     private PollService pollService;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createPoll(@RequestBody CreatePollRequest pollData) {
+    public ResponseEntity<String> createPoll(@RequestBody CreatePollRequestDto pollData) {
         pollService.createPoll(pollData);
         return ResponseEntity.ok("Poll created event sent");
     }
 
     @PostMapping("/vote")
-    public ResponseEntity<String> vote(@RequestBody VoteRequest voteData) {
+    public ResponseEntity<String> vote(@RequestBody VoteCreateRequestDto voteData) {
         pollService.vote(voteData);
         return ResponseEntity.ok("Vote cast event sent");
     }
